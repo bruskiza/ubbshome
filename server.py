@@ -65,6 +65,7 @@ def toggleOutput(gpioOut):
 def doSomething(channel):
 	# Find the output for the input
 	output = channel2output(channel)
+	print "Got output: " + str(output) + " for channel: " + str(channel)
 	toggleOutput(output)
 
 
@@ -80,8 +81,9 @@ for d in config["DEVICES"]:
 
 	# set outputs to off
 	GPIO.setup(pin_out, GPIO.OUT)
+	print "Setting up " + str(pin_out) + " as output..."
 	GPIO.setup(pin_out, GPIO.HIGH)
-	
+	print "Setting " + str(pin_out) + " to off..."
 	# set inputs to in
 	GPIO.setup(pin_in, GPIO.IN) 
 
