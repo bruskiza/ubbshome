@@ -46,26 +46,6 @@ logger.setLevel(LOG_LEVEL)
 #prints GPIO of device
 #print config["OUTPUT"]["TV"]["GPIO"]
 
-#Setup my GPIO Stuff
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-
-# Setup for each of the devices, 
-for d in config["DEVICES"]:
-	# get the pin
-	pin_in = config["DEVICES"][d]["GPIO_IN"]
-	pin_out = config["DEVICES"][d]["GPIO_OUT"]
-
-	# set outputs to off
-	GPIO.setup(pin_out), GPIO.OUT)
-	GPIO.setup(pin_out), GPIO.HIGH)
-	
-	# set inputs to in
-	GPIO.setup(pin_in, GPIO.IN) 
-
-	# add events to inputs
-	GPIO.add_event_detect(pin_in, GPIO.RISING, callback=doSomething, bouncetime=300);
-
 # Given a specific channel, we return the output gpio
 def channel2output(channel):
 	for d in config['DEVICES']:
@@ -86,6 +66,28 @@ def doSomething(channel):
 	# Find the output for the input
 	output = channel2output(channel)
 	toggleOutput(output)
+
+
+#Setup my GPIO Stuff
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+
+# Setup for each of the devices, 
+for d in config["DEVICES"]:
+	# get the pin
+	pin_in = config["DEVICES"][d]["GPIO_IN"]
+	pin_out = config["DEVICES"][d]["GPIO_OUT"]
+
+	# set outputs to off
+	GPIO.setup(pin_out, GPIO.OUT)
+	GPIO.setup(pin_out, GPIO.HIGH)
+	
+	# set inputs to in
+	GPIO.setup(pin_in, GPIO.IN) 
+
+	# add events to inputs
+	GPIO.add_event_detect(pin_in, GPIO.RISING, callback=doSomething, bouncetime=300);
+
 
 #Scheduling stuff
 sched = Scheduler()
