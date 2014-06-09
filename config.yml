@@ -5,7 +5,7 @@ SERVER:
 
 API: "AFEFAVS34T34C234RD2R2R334"
 PROGNAME: ubbshome
-LOGFILE: /opt/ubbshome/ubbshome.log
+LOGFILE: ubbshome.log
 LOGFORMAT: "%(asctime)s %(levelname)s %(message)s"
 LOG_LEVEL: INFO
 
