@@ -11,7 +11,7 @@ from apscheduler.scheduler import Scheduler
 import logging
 
 #Open Config file
-f=open('/opt/ubbshome/config.yml')
+f=open('config.yml')
 config = yaml.safe_load(f)
 #config=yaml.load(f)
 f.close()
