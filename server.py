@@ -53,87 +53,38 @@ logger.setLevel(LOG_LEVEL)
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-
-def channeltooutput():
-	for p in PAIRS:
-		inp=config["PAIR"][p]["IN"]
-		out=config["PAIR"][p]["OUT"]	
-		print("in "+str(inp)+ " out " +str(out))
-
-channeltooutput()
-
-#Setup Outputs
-for o in OUTPUTS:
-	pin = config["OUTPUT"][o]["GPIO"]
-	GPIO.setup(pin, GPIO.OUT)
-	#Set them to all off
-	GPIO.output(pin,GPIO.HIGH)	
-
-#Setup Inputs
-for i in INPUTS:
-	pin = config["INPUT"][i]["GPIO"]
-	GPIO.setup(pin, GPIO.IN) 
-
+# Setup for each of the devices, 
+for d in config["DEVICES"]:
+	# set outputs to off
+	GPIO.setup(d['GPIO_OUT'], GPIO.OUT)
+	GPIO.setup(d['GPIO_OUT'], GPIO.HIGH)
 	
-#Create functions for buttons
-#Need To Fix
-for p in PAIRS:
-	out = config["PAIR"][p]["OUT"]
-	def p(channel):
-		if(GPIO.input(out) == 1):
-			print("Turning "+p+" on")
-               		logger.info('Turning '+p+ ' on')
-                	GPIO.output(out, GPIO.LOW)
-		else:
-			print("Turning "+p+" off")
-                	logger.info('Turning '+p+ ' off')
-                	GPIO.output(out,GPIO.HIGH)
-#Button Stuff
+	# set inputs to in
+	GPIO.setup(d["GPIO_IN"], GPIO.IN) 
 
-def Pair1(channel):
-        #print("Button 1 pressed!")
-        #print("Note how the bouncetime affects the button press")
-        if(GPIO.input(14) == 1):
-                output1 = "ON"
-                print("Turning "+output1+" output1")
-                GPIO.output(14, GPIO.LOW)
-        else:
-                output1 = "OFF"
-                print("Turning "+output1+" output1")
-                GPIO.output(14,GPIO.HIGH)
+	# add events to inputs
+	GPIO.add_event_detect(d['GPIO_IN'], GPIO.RISING, callback=doSomething, bouncetime=300);
 
+# Given a specific channel, we return the output gpio
+def channel2output(channel):
+	for d in config['DEVICES']:
+		if d['GPIO_IN'] == channel:
+			return d['GPIO_OUT']
 
-def Pair2(channel):
-        #print("Button 2 pressed!")
-        #print("Note how the bouncetime affects the button press")
-        if(GPIO.input(15) == 1):
-                output2 = "ON"
-                print("Turning "+output2+" output2")
-                GPIO.output(15, GPIO.LOW)
-        else:
-                output2 = "OFF"
-                print("Turning "+output2+" output2")
-                GPIO.output(15,GPIO.HIGH)
+# Given a specific output, check its state and toggle it
+def toggleOutput(gpioOut):
+	if (GPIO.input(gpioOut) == 1):
+		print("Turning " + str(gpioOut) + " on")
+		GPIO.output(gpioOut, GPIO.LOW)
+	else:
+		print("Turning " + str(gpioOut) + " off")
+		GPIO.output(gpioOut, GPIO.HIGH)
 
-
-
-def Pair(channel):
-	print("channel" + str(channel))
-	if(GPIO.input(14) == 1):
-                print("Turning ON "+str(channel))
-                GPIO.output(14, GPIO.LOW)
-        else:
-                print("Turning OFF "+str(channel))
-                GPIO.output(14,GPIO.HIGH)
-	
-#GPIO.add_event_detect(2, GPIO.RISING, callback=Pair1, bouncetime=300)
-#GPIO.add_event_detect(3, GPIO.RISING, callback=Pair2, bouncetime=300)
-
-for p in PAIRS:
-	print (p)
-	pin = config["PAIR"][p]["IN"]
-	GPIO.add_event_detect(pin, GPIO.RISING, callback=Pair, bouncetime=300)
-
+# Given a specific channel, do something
+def doSomething(channel):
+	# Find the output for the input
+	output = channel2output(channel)
+	toggleOutput(output)
 
 #Scheduling stuff
 sched = Scheduler()
