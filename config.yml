@@ -1,0 +1,52 @@
+SERVER: 
+      PORT: 5005
+      HOST: 127.0.0.1
+      BUFFER_SIZE: 200
+
+API: "AFEFAVS34T34C234RD2R2R334"
+PROGNAME: ubbshome
+LOGFILE: /opt/ubbshome/ubbshome.log
+LOGFORMAT: "%(asctime)s %(levelname)s %(message)s"
+LOG_LEVEL: INFO
+
+#Schedule Stuff
+
+#GPIO Pin Info please make sure you understand what you are doing before connecting anything to your device
+#PIN is = GPIO Pin not board pin
+OUTPUT:
+     MAIN-LIGHT:  
+          GPIO: 14
+     TV:  
+          GPIO: 15
+     OUTSIDE-LIGHT:  
+          GPIO: 18
+     FRONT-DOOR-LIGHT:  
+          GPIO: 23
+          description: Light 4
+     BACK-DOOR-LIGHT: 
+          GPIO: 24
+          description: Light 5
+     OP6: 
+          GPIO: 25
+          description: Light 6
+     OP7: 
+          GPIO: 8
+          description: Light 7
+     OP8: 
+          GPIO: 7
+          description: Light 8
+
+INPUT:
+    IP1:
+            GPIO: 2
+    IP2:
+            GPIO: 3
+
+#these are what your switches control
+PAIR:
+    PAIR1:
+            IN: 2
+            OUT: 14
+    Pair2:   
+            IN: 3
+            OUT: 15
