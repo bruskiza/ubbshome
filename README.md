@@ -3,9 +3,13 @@ Ubbshome Project
 -descrip : Python, html, javascript and CSS for a web based API controller for a rasberry pi connected to a light-bulb tailswitch and string of ws2801 LED's
 
 Required Modules -
-.BeautifulSoup4 (easy_install beautifulsoup4)
-.Twisted (apt-get install python-twisted)
-.Websocket (easy_install websocket-client)
+APScheduler
+beautifulsoup        
+python-pywapi
+PyYAML                               
+setuptools  
+websocket-client  
+wiringPi
 
 Python files -
 server.py is the main daemon, output and input contorl
