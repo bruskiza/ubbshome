@@ -54,6 +54,7 @@ def channel2output(channel):
 
 # Given a specific output, check its state and toggle it
 def toggleOutput(gpioOut):
+	GPIO.setup(gpioOut, GPIO.OUT)
 	if (GPIO.input(gpioOut) == 1):
 		print("Turning " + str(gpioOut) + " on")
 		GPIO.output(gpioOut, GPIO.LOW)
